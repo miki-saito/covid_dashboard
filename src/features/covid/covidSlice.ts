@@ -4,7 +4,10 @@ import { RootState } from "../../app/store"
 import dataJson from "./data.json"
 import dataJsonDaily from "./dataDaily.json"
 
+// eslint-disable-next-line
 const apiUrl = "https://covid19.mathdro.id/api"
+// eslint-disable-next-line
+const apiHerokuUrl = "https://covid19-api-udemy.herokuapp.com/api"
 
 type APIDATA = typeof dataJson
 type APIDATADAILY = typeof dataJsonDaily
@@ -16,65 +19,65 @@ type covidState = {
 }
 const initialState: covidState = {
     data:{
-        "confirmed": {
-        "value": 42650540,
-        "detail": "https://covid19.mathdro.id/api/confirmed"
+        confirmed: {
+        value: 42650540,
+        detail: "https://covid19.mathdro.id/api/confirmed"
         },
-        "recovered": {
-        "value": 28792003,
-        "detail": "https://covid19.mathdro.id/api/recovered"
+        recovered: {
+        value: 28792003,
+        detail: "https://covid19.mathdro.id/api/recovered"
         },
-        "deaths": {
-        "value": 1150241,
-        "detail": "https://covid19.mathdro.id/api/deaths"
+        deaths: {
+        value: 1150241,
+        detail: "https://covid19.mathdro.id/api/deaths"
         },
-        "dailySummary": "https://covid19.mathdro.id/api/daily",
-        "dailyTimeSeries": {
-        "pattern": "https://covid19.mathdro.id/api/daily/[dateString]",
-        "example": "https://covid19.mathdro.id/api/daily/2-14-2020"
+        dailySummary: "https://covid19.mathdro.id/api/daily",
+        dailyTimeSeries: {
+        pattern: "https://covid19.mathdro.id/api/daily/[dateString]",
+        example: "https://covid19.mathdro.id/api/daily/2-14-2020"
         },
-        "image": "https://covid19.mathdro.id/api/og",
-        "source": "https://github.com/mathdroid/covid19",
-        "countries": "https://covid19.mathdro.id/api/countries",
-        "countryDetail": {
-        "pattern": "https://covid19.mathdro.id/api/countries/[country]",
-        "example": "https://covid19.mathdro.id/api/countries/USA"
+        image: "https://covid19.mathdro.id/api/og",
+        source: "https://github.com/mathdroid/covid19",
+        countries: "https://covid19.mathdro.id/api/countries",
+        countryDetail: {
+        pattern: "https://covid19.mathdro.id/api/countries/[country]",
+        example: "https://covid19.mathdro.id/api/countries/USA"
         },
-        "lastUpdate": "2020-10-25T09:24:38.000Z"
+        lastUpdate: "2020-10-25T09:24:38.000Z"
         },
     country: "" ,
     dailyData:[
         {
-        "totalConfirmed": 555,
-        "mainlandChina": 548,
-        "otherLocations": 7,
-        "deltaConfirmed": 0,
-        "totalRecovered": 0,
-        "confirmed": {
-        "total": 555,
-        "china": 548,
-        "outsideChina": 7
+        totalConfirmed: 555,
+        mainlandChina: 548,
+        otherLocations: 7,
+        deltaConfirmed: 0,
+        totalRecovered: 0,
+        confirmed: {
+            total: 555,
+            china: 548,
+            outsideChina: 7
         },
-        "deltaConfirmedDetail": {
-        "total": 0,
-        "china": 0,
-        "outsideChina": 0
+        deltaConfirmedDetail: {
+            total: 0,
+            china: 0,
+            outsideChina: 0
         },
-        "deaths": {
-        "total": 17,
-        "china": 17,
-        "outsideChina": 0
+        deaths: {
+            total: 17,
+            china: 17,
+            outsideChina: 0
         },
-        "recovered": {
-        "total": 0,
-        "china": 0,
-        "outsideChina": 0
+        recovered: {
+            total: 0,
+            china: 0,
+            outsideChina: 0
         },
-        "active": 0,
-        "deltaRecovered": 0,
-        "incidentRate": 0.44821646978651847,
-        "peopleTested": 0,
-        "reportDate": "2020-01-22"
+        active: 0,
+        deltaRecovered: 0,
+        incidentRate: 0.44821646978651847,
+        peopleTested: 0,
+        reportDate: "2020-01-22"
         }
     ],
 }
@@ -87,18 +90,28 @@ export const fetchAsyncGet = createAsyncThunk("covid/get", async () => {
 
 
 export const fetchAsyncGetDaily = createAsyncThunk("covid/getDaily", async () => {
-    const { data } = await axios.get<APIDATADAILY>(`${apiUrl}/daily`)
+    // const { data } = await axios.get<APIDATADAILY>(`${apiUrl}/daily`)
+    // apiが動かなかったら仮のapiに切り替える
+    const { data } = await axios.get<APIDATADAILY>(`${apiHerokuUrl}/daily`)
     return data
 })
 
 
-export const fetchAsyncGetCountry = createAsyncThunk("covid/getCountry", async (country: string) => {
-    let dynamicUrl = apiUrl
-    if (country) {
-        dynamicUrl = `${apiUrl}/countries/${country}`
-    }
-    const { data } = await axios.get<APIDATA>(`dynamicUrl`)
-    return { data: data, country: country}
+export const fetchAsyncGetCountry = createAsyncThunk("covid/getCountry", 
+    async (country: string) => {
+        console.log(country);
+        
+        let dynamicUrl = apiUrl;
+        if (country) {
+            dynamicUrl = `${apiUrl}/countries/${country}`
+            // example: "https://covid19.mathdro.id/api/countries/USA"
+            // const apiUrl = "https://covid19.mathdro.id/api"
+            console.log("dynamicUrl:" + dynamicUrl);
+            
+        }
+        const { data } = await axios.get<APIDATA>(dynamicUrl)
+        console.log(data);
+        return { data: data, country: country }
 })
 
 const covidSlice  = createSlice({
