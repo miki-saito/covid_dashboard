@@ -18,7 +18,6 @@ const SwitchCountry: React.FC= () => {
 
     const countries = [
       "japan",
-      "Japan",
       "china",
       "us",
       "france",

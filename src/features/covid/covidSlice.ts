@@ -90,27 +90,25 @@ export const fetchAsyncGet = createAsyncThunk("covid/get", async () => {
 
 
 export const fetchAsyncGetDaily = createAsyncThunk("covid/getDaily", async () => {
-    // const { data } = await axios.get<APIDATADAILY>(`${apiUrl}/daily`)
-    // apiが動かなかったら仮のapiに切り替える
-    const { data } = await axios.get<APIDATADAILY>(`${apiHerokuUrl}/daily`)
+    const { data } = await axios.get<APIDATADAILY>(`${apiUrl}/daily`)
+    // apiが動かなかったら下の仮apiに切り替える
+    // const { data } = await axios.get<APIDATADAILY>(`${apiHerokuUrl}/daily`)
     return data
 })
 
 
 export const fetchAsyncGetCountry = createAsyncThunk("covid/getCountry", 
     async (country: string) => {
-        console.log(country);
+        // console.log(country);
         
         let dynamicUrl = apiUrl;
         if (country) {
             dynamicUrl = `${apiUrl}/countries/${country}`
-            // example: "https://covid19.mathdro.id/api/countries/USA"
-            // const apiUrl = "https://covid19.mathdro.id/api"
-            console.log("dynamicUrl:" + dynamicUrl);
+            // console.log("dynamicUrl:" + dynamicUrl);
             
         }
         const { data } = await axios.get<APIDATA>(dynamicUrl)
-        console.log(data);
+        // console.log(data);
         return { data: data, country: country }
 })
 
