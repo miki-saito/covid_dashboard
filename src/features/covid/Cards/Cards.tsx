@@ -53,7 +53,6 @@ const Cards:React.FC = () => {
                    </CardContent>
                </Grid>
             </Grid>
-            
         </div>
     )
 }
