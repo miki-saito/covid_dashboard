@@ -1,0 +1,25 @@
+.countainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  padding: 0px;
+}
+
+.infected {
+  border-left: 5px solid #33a3ff;
+  border-radius: 0% !important;
+  margin: 2% 2% !important;
+}
+
+.recoverd {
+  border-left: solid #3cb371;
+  border-radius: 0% !important;
+  margin: 2% 2% !important;
+}
+
+.deaths {
+  border-left: solid #ff3370;
+  border-radius: 0% !important;
+  margin: 2% 2% !important;
+}
